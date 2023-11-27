@@ -24,7 +24,7 @@
             <!-- Small boxes (Stat box) -->
             <div class="row">
                 <div class="col-lg-6 col-12">
-                    <form action="{{route('posts.store')}}" method="post" enctype="multipart/form-data">
+                    <form action="{{route('admin.posts.store')}}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group w-50">
                             <label for="title">Добавить название</label>
@@ -61,7 +61,7 @@
                             <input type="submit" class="btn btn-primary" value="Добавить">
                         </div>
                         <div class="mr-4">
-                            <a href="{{ route('posts.index') }}" class="btn btn-primary">Назад</a>
+                            <a href="{{ route('admin.posts.index') }}" class="btn btn-primary">Назад</a>
                         </div>
                     </form>
                 </div>

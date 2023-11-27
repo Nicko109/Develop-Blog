@@ -23,7 +23,7 @@
         <div class="container-fluid">
             <!-- Small boxes (Stat box) -->
             <div class="row">
-                <form action="{{route('videos.update', $video->id)}}" method="video" enctype="multipart/form-data">
+                <form action="{{route('admin.videos.update', $video->id)}}" method="video" enctype="multipart/form-data">
                     @csrf
                     @method('patch')
                     <div class="form-group w-50">
@@ -39,8 +39,8 @@
                         <label for="exampleInputFile">Редактировать видеофайл</label>
                         <div class="input-group">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" name="file" value="{{$video->image}}">
-                                <label class="custom-file-label">{{$video->image}}</label>
+                                <input type="file" class="custom-file-input" name="file" value="{{$video->file}}">
+                                <label class="custom-file-label">{{$video->file}}}</label>
                             </div>
                             <div class="input-group-append">
                                 <span class="input-group-text">Загрузка</span>
@@ -51,7 +51,10 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <textarea name="content" rows="8" cols="80">{{ $video->content }}</textarea>
+                        <div>
+                        <label for="content">Редактировать описание</label>
+                        </div>
+                        <textarea id="content" name="content" rows="8" cols="80">{{ $video->content }}</textarea>
                         @error('content')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -60,7 +63,7 @@
                         <input type="submit" class="btn btn-success" value="Редактировать">
                     </div>
                     <div class="mr-4">
-                        <a href="{{ route('videos.show', $video->id) }}" class="btn btn-primary">Назад</a>
+                        <a href="{{ route('admin.videos.show', $video->id) }}" class="btn btn-primary">Назад</a>
                     </div>
                 </form>
             </div>

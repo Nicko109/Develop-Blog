@@ -26,7 +26,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <a href="{{ route('videos.create') }}" class="btn btn-primary">Добавить</a>
+                            <a href="{{ route('admin.videos.create') }}" class="btn btn-primary">Добавить</a>
                         </div>
 
                         <div class="card-body table-responsive p-0">
@@ -42,7 +42,7 @@
                                 @foreach($videos as $video)
                                     <tr>
                                         <td>{{ $video->id }}</td>
-                                        <td><a href="{{ route('videos.show', $video->id) }}">{{ $video->title }}</a></td>
+                                        <td><a href="{{ route('admin.videos.show', $video->id) }}">{{ $video->title }}</a></td>
                                         <td>{{ $video->content }}</td>
                                     </tr>
                                 @endforeach

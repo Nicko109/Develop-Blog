@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Admin\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -38,7 +38,7 @@ class UserController extends Controller
 
         $user = UserService::store($data);
 
-        return redirect()->route('users.index');
+        return redirect()->route('admin.users.index');
     }
 
     /**
@@ -65,7 +65,7 @@ class UserController extends Controller
         $data = $request->validated();
         UserService::update($user, $data);
 
-        return redirect()->route('users.show', compact('user'));
+        return redirect()->route('admin.users.show', compact('user'));
 
     }
 
@@ -76,7 +76,7 @@ class UserController extends Controller
     {
         UserService::destroy($user);
 
-        return redirect()->route('users.index');
+        return redirect()->route('admin.users.index');
 
     }
 }

@@ -26,7 +26,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <a href="{{ route('users.create') }}" class="btn btn-primary">Добавить</a>
+                            <a href="{{ route('admin.users.create') }}" class="btn btn-primary">Добавить</a>
                         </div>
 
                         <div class="card-body table-responsive p-0">
@@ -42,7 +42,7 @@
                                 @foreach($users as $user)
                                     <tr>
                                         <td>{{ $user->id }}</td>
-                                        <td><a href="{{ route('users.show', $user->id) }}">{{ $user->name }}</a></td>
+                                        <td><a href="{{ route('admin.users.show', $user->id) }}">{{ $user->name }}</a></td>
                                         <td>{{ $user->email }}</td>
                                     </tr>
                                 @endforeach

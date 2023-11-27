@@ -26,7 +26,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <a href="{{ route('posts.create') }}" class="btn btn-primary">Добавить</a>
+                            <a href="{{ route('admin.posts.create') }}" class="btn btn-primary">Добавить</a>
                         </div>
 
                         <div class="card-body table-responsive p-0">
@@ -42,7 +42,7 @@
                                 @foreach($posts as $post)
                                     <tr>
                                         <td>{{ $post->id }}</td>
-                                        <td><a href="{{ route('posts.show', $post->id) }}">{{ $post->title }}</a></td>
+                                        <td><a href="{{ route('admin.posts.show', $post->id) }}">{{ $post->title }}</a></td>
                                         <td>{{ $post->content }}</td>
                                     </tr>
                                 @endforeach

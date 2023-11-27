@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Note;
+namespace App\Http\Controllers\Main\Note;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Note\NoteResource;
 use App\Models\Note;
 use App\Http\Requests\Note\StoreNoteRequest;
 use App\Http\Requests\Note\UpdateNoteRequest;
@@ -18,7 +19,11 @@ class NoteController extends Controller
     {
         $notes = NoteService::index();
 
-        return view('notes.index', compact('notes'));
+        $notes = NoteResource::collection($notes)->resolve();
+
+
+
+        return inertia('Note/Index', compact('notes'));
     }
 
     /**
@@ -26,7 +31,7 @@ class NoteController extends Controller
      */
     public function create()
     {
-        return view('notes.create');
+        return inertia('Note/Create');
     }
 
     /**
@@ -46,7 +51,8 @@ class NoteController extends Controller
      */
     public function show(Note $note)
     {
-        return view('notes.show', compact('note'));
+        $note = NoteResource::make($note)->resolve();
+        return inertia('Note/Show', compact('note'));
     }
 
     /**
@@ -54,7 +60,8 @@ class NoteController extends Controller
      */
     public function edit(Note $note)
     {
-        return view('notes.edit', compact('note'));
+        $note = NoteResource::make($note)->resolve();
+        return inertia('Note/Edit', compact('note'));
     }
 
     /**
@@ -65,7 +72,7 @@ class NoteController extends Controller
         $data = $request->validated();
         NoteService::update($note, $data);
 
-        return redirect()->route('notes.show', compact('note'));
+        return redirect()->route('notes.index', compact('note'));
 
     }
 

@@ -24,7 +24,7 @@
             <!-- Small boxes (Stat box) -->
             <div class="row">
                 <div class="col-lg-6 col-12">
-                    <form action="{{route('videos.store')}}" method="post" enctype="multipart/form-data">
+                    <form action="{{route('admin.videos.store')}}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group w-50">
                             <label for="title">Добавить название</label>
@@ -51,7 +51,8 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <textarea name="content" rows="8" cols="80">{{ old('content') }}</textarea>
+                            <label for="content">Добавить описание</label>
+                            <textarea id="content" name="content" rows="8" cols="80">{{ old('content') }}</textarea>
                             @error('content')
                             <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -60,7 +61,7 @@
                             <input type="submit" class="btn btn-primary" value="Добавить">
                         </div>
                         <div class="mr-4">
-                            <a href="{{ route('videos.index') }}" class="btn btn-primary">Назад</a>
+                            <a href="{{ route('admin.videos.index') }}" class="btn btn-primary">Назад</a>
                         </div>
                     </form>
                 </div>

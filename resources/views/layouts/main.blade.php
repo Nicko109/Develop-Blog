@@ -127,7 +127,7 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="{{ route('main.index') }}" class="brand-link">
+        <a href="{{ route('admin.main.index') }}" class="brand-link">
             <span class="brand-text font-weight-light">Мой Блог</span>
         </a>
 
@@ -137,25 +137,25 @@
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-item">
-                        <a href="{{ route('notes.index') }}" class="nav-link">
+                        <a href="{{ route('admin.notes.index') }}" class="nav-link">
                             <i class="nav-icon fas fa-clipboard"></i>
                             <p>Заметки</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('posts.index') }}" class="nav-link">
+                        <a href="{{ route('admin.posts.index') }}" class="nav-link">
                             <i class="nav-icon far fa-image"></i>
                             <p>Посты</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('videos.index') }}" class="nav-link">
+                        <a href="{{ route('admin.videos.index') }}" class="nav-link">
                             <i class="nav-icon fas fa-video"></i>
                             <p>Видео</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('users.index') }}" class="nav-link">
+                        <a href="{{ route('admin.users.index') }}" class="nav-link">
                             <i class="nav-icon fas fa-users"></i>
                             <p>Пользователи</p>
                         </a>
@@ -173,7 +173,7 @@
     </div>
     <!-- /.content-wrapper -->
     <footer class="main-footer">
-        <strong>Copyright &copy; 2014-{{ now()->year }} <a href="{{ route('main.index') }}">Мой Блог</a>.</strong>
+        <strong>Copyright &copy; 2014-{{ now()->year }} <a href="{{ route('admin.main.index') }}">Мой Блог</a>.</strong>
         Все права защищены.
     </footer>
 

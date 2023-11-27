@@ -24,7 +24,7 @@
             <!-- Small boxes (Stat box) -->
             <div class="row">
                 <div class="col-lg-6 col-12">
-                    <form action="{{route('users.update', $user->id)}}" method="post">
+                    <form action="{{route('admin.users.update', $user->id)}}" method="post">
                         @csrf
                         @method('patch')
                         <div class="form-group">
@@ -64,7 +64,7 @@
                             <input type="submit" class="btn btn-success" value="Редактировать">
                         </div>
                         <div class="mr-4">
-                            <a href="{{ route('users.show', $user->id) }}" class="btn btn-primary">Назад</a>
+                            <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-primary">Назад</a>
                         </div>
                     </form>
                 </div>

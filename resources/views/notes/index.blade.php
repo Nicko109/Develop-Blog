@@ -26,7 +26,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <a href="{{ route('notes.create') }}" class="btn btn-primary">Добавить</a>
+                            <a href="{{ route('admin.notes.create') }}" class="btn btn-primary">Добавить</a>
                         </div>
 
                         <div class="card-body table-responsive p-0">
@@ -41,7 +41,7 @@
                                 @foreach($notes as $note)
                                     <tr>
                                         <td>{{ $note->id }}</td>
-                                        <td><a href="{{ route('notes.show', $note->id) }}">{{ $note->title }}</a></td>
+                                        <td><a href="{{ route('admin.notes.show', $note->id) }}">{{ $note->title }}</a></td>
                                     </tr>
                                 @endforeach
                                 </tbody>

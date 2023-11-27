@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Video;
+namespace App\Http\Controllers\Admin\Video;
 
 use App\Http\Controllers\Controller;
 use App\Models\Video;
@@ -38,7 +38,7 @@ class VideoController extends Controller
 
         $video = VideoService::store($data);
 
-        return redirect()->route('videos.index');
+        return redirect()->route('admin.videos.index');
     }
 
     /**
@@ -65,7 +65,7 @@ class VideoController extends Controller
         $data = $request->validated();
         VideoService::update($video, $data);
 
-        return redirect()->route('videos.show', compact('video'));
+        return redirect()->route('admin.videos.show', compact('video'));
 
     }
 
@@ -76,7 +76,7 @@ class VideoController extends Controller
     {
         VideoService::destroy($video);
 
-        return redirect()->route('videos.index');
+        return redirect()->route('admin.videos.index');
 
     }
 }

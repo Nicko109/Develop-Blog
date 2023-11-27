@@ -23,7 +23,7 @@
         <div class="container-fluid">
             <!-- Small boxes (Stat box) -->
             <div class="row">
-                <form action="{{route('posts.update', $post->id)}}" method="post" enctype="multipart/form-data">
+                <form action="{{route('admin.posts.update', $post->id)}}" method="post" enctype="multipart/form-data">
                     @csrf
                     @method('patch')
                     <div class="form-group w-50">
@@ -51,7 +51,10 @@
                         @enderror
                     </div>
                     <div class="form-group">
-                        <textarea name="content" rows="8" cols="80">{{ $post->content }}</textarea>
+                        <div>
+                            <label for="content">Редактировать описание</label>
+                        </div>
+                        <textarea id="content" name="content" rows="8" cols="80">{{ $post->content }}</textarea>
                         @error('content')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -60,7 +63,7 @@
                         <input type="submit" class="btn btn-success" value="Редактировать">
                     </div>
                     <div class="mr-4">
-                        <a href="{{ route('posts.show', $post->id) }}" class="btn btn-primary">Назад</a>
+                        <a href="{{ route('admin.posts.show', $post->id) }}" class="btn btn-primary">Назад</a>
                     </div>
                 </form>
             </div>

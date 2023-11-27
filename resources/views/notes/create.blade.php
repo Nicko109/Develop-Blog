@@ -24,10 +24,10 @@
             <!-- Small boxes (Stat box) -->
             <div class="row">
                 <div class="col-lg-6 col-12">
-                    <form action="{{route('notes.store')}}" method="post">
+                    <form action="{{route('admin.notes.store')}}" method="post">
                         @csrf
                         <div class="form-group">
-                            <textarea name="title" rows="8" cols="80">{{ old('title') }}</textarea>
+                            <textarea placeholder="Добавить заметку" name="title" rows="8" cols="80">{{ old('title') }}</textarea>
                             @error('title')
                             <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -36,7 +36,7 @@
                             <input type="submit" class="btn btn-primary" value="Добавить">
                         </div>
                         <div class="mr-4">
-                            <a href="{{ route('notes.index') }}" class="btn btn-primary">Назад</a>
+                            <a href="{{ route('admin.notes.index') }}" class="btn btn-primary">Назад</a>
                         </div>
                     </form>
                 </div>

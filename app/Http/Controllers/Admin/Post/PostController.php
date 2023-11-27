@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Post;
+namespace App\Http\Controllers\Admin\Post;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Http\Requests\Post\StorePostRequest;
-use App\Http\Requests\Post\UpdateVideoRequest;
+use App\Http\Requests\Post\UpdatePostRequest;
 use App\Services\PostService;
 use Mockery\Matcher\Not;
 
@@ -38,7 +38,7 @@ class PostController extends Controller
 
         $post = PostService::store($data);
 
-        return redirect()->route('posts.index');
+        return redirect()->route('admin.posts.index');
     }
 
     /**
@@ -60,12 +60,12 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateVideoRequest $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post)
     {
         $data = $request->validated();
         PostService::update($post, $data);
 
-        return redirect()->route('posts.show', compact('post'));
+        return redirect()->route('admin.posts.show', compact('post'));
 
     }
 
@@ -76,7 +76,7 @@ class PostController extends Controller
     {
         PostService::destroy($post);
 
-        return redirect()->route('posts.index');
+        return redirect()->route('admin.posts.index');
 
     }
 }

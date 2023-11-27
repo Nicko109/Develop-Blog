@@ -27,9 +27,9 @@
                     <div class="card">
                         <div class="card-header d-flex p-3">
                             <div class="mr-4">
-                                <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-success">Редактировать</a>
+                                <a href="{{ route('admin.posts.edit', $post->id) }}" class="btn btn-success">Редактировать</a>
                             </div>
-                            <form action="{{ route('posts.destroy', $post->id) }}" method="post">
+                            <form action="{{ route('admin.posts.destroy', $post->id) }}" method="post">
                                 @csrf
                                 @method('delete')
                                 <input type="submit" class="btn btn-danger" value="Удалить">
@@ -60,7 +60,7 @@
                 </div>
             </div>
             <!-- /.row --> <div class="mr-4">
-                <a href="{{ route('posts.index') }}" class="btn btn-primary">Назад</a>
+                <a href="{{ route('admin.posts.index') }}" class="btn btn-primary">Назад</a>
             </div>
         </div><!-- /.container-fluid -->
     </section>

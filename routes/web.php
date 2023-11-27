@@ -35,12 +35,26 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/admin', [\App\Http\Controllers\Main\IndexController::class, 'index'])->name('main.index');
-
-Route::resource('/notes', \App\Http\Controllers\Note\NoteController::class);
-Route::resource('/posts', \App\Http\Controllers\Post\PostController::class);
-Route::resource('/users', \App\Http\Controllers\User\UserController::class);
-Route::resource('/videos', \App\Http\Controllers\Video\VideoController::class);
 
 
-require __DIR__.'/auth.php';
+
+Route::get('/main', [\App\Http\Controllers\Main\Main\IndexController::class, 'index'])->name('main.index');
+
+Route::resource('/notes', \App\Http\Controllers\Main\Note\NoteController::class);
+Route::resource('/posts', \App\Http\Controllers\Main\Post\PostController::class);
+Route::resource('/users', \App\Http\Controllers\Main\User\UserController::class);
+Route::resource('/videos', \App\Http\Controllers\Main\Video\VideoController::class);
+
+Route::group([
+    'prefix' => 'admin',
+    'as' => 'admin.',
+], function () {
+    Route::get('/', [\App\Http\Controllers\Admin\Main\IndexController::class, 'index'])->name('main.index');
+
+    Route::resource('/notes', \App\Http\Controllers\Admin\Note\NoteController::class);
+    Route::resource('/posts', \App\Http\Controllers\Admin\Post\PostController::class);
+    Route::resource('/users', \App\Http\Controllers\Admin\User\UserController::class);
+    Route::resource('/videos', \App\Http\Controllers\Admin\Video\VideoController::class);
+});
+
+require __DIR__ . '/auth.php';
