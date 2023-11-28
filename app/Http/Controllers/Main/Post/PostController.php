@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\Main\Post;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Note\NoteResource;
-use App\Http\Resources\Post\PostResource;
-use App\Models\Post;
 use App\Http\Requests\Post\StorePostRequest;
 use App\Http\Requests\Post\UpdatePostRequest;
+use App\Http\Resources\Post\PostResource;
+use App\Models\Post;
 use App\Services\PostService;
-use Illuminate\Support\Facades\Storage;
-use Mockery\Matcher\Not;
+use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
@@ -40,6 +38,7 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
+
         $data = $request->validated();
 
 
@@ -63,6 +62,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+
         $post = PostResource::make($post)->resolve();
 
         return inertia('Post/Edit', compact('post'));
@@ -73,11 +73,14 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
+
         $data = $request->validated();
+
+
         $data = PostService::updateImage($post, $data);
         PostService::update($post, $data);
 
-        return redirect()->route('posts.index', compact('post'));
+        return redirect()->route('posts.show', compact('post'));
 
     }
 
@@ -86,6 +89,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+
         PostService::destroy($post);
 
         return redirect()->route('posts.index');

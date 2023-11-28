@@ -46,7 +46,7 @@ Route::resource('/users', \App\Http\Controllers\Main\User\UserController::class)
 Route::resource('/videos', \App\Http\Controllers\Main\Video\VideoController::class);
 
 
-Route::post('/post_images', [\App\Http\Controllers\Main\PostImage\PostImageController::class, 'store']);
+//Route::post('/post_images', [\App\Http\Controllers\Main\PostImage\PostImageController::class, 'store']);
 
 Route::group([
     'prefix' => 'admin',
