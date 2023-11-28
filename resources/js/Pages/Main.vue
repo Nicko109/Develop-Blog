@@ -1,7 +1,7 @@
 <template>
-<div>
-    Index Main
-</div>
+    <div class="w-96 mx-auto">
+        Index Main
+    </div>
 </template>
 
 <script>

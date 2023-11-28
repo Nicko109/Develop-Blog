@@ -1,5 +1,5 @@
 <template>
-<div>
+    <div class="w-96 mx-auto">
     <div class="form-group mb-4">
         <Link :href="route('notes.create')" class="inline-block bg-sky-600 px-3 py-2 text-white">Добавить</Link>
     </div>

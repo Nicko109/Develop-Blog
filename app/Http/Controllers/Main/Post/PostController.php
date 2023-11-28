@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Main\Post;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Note\NoteResource;
+use App\Http\Resources\Post\PostResource;
 use App\Models\Post;
 use App\Http\Requests\Post\StorePostRequest;
 use App\Http\Requests\Post\UpdatePostRequest;
 use App\Services\PostService;
+use Illuminate\Support\Facades\Storage;
 use Mockery\Matcher\Not;
 
 class PostController extends Controller
@@ -18,7 +21,10 @@ class PostController extends Controller
     {
         $posts = PostService::index();
 
-        return view('posts.index', compact('posts'));
+        $posts = PostResource::collection($posts)->resolve();
+
+        return inertia('Post/Index', compact('posts'));
+
     }
 
     /**
@@ -26,7 +32,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        return inertia('Post/Create');
     }
 
     /**
@@ -36,9 +42,10 @@ class PostController extends Controller
     {
         $data = $request->validated();
 
+
         $post = PostService::store($data);
 
-        return redirect()->route('admin.posts.index');
+        return redirect()->route('posts.index');
     }
 
     /**
@@ -46,7 +53,9 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return view('posts.show', compact('post'));
+        $post = PostResource::make($post)->resolve();
+
+        return inertia('Post/Show', compact('post'));
     }
 
     /**
@@ -54,7 +63,9 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('posts.edit', compact('post'));
+        $post = PostResource::make($post)->resolve();
+
+        return inertia('Post/Edit', compact('post'));
     }
 
     /**
@@ -63,9 +74,10 @@ class PostController extends Controller
     public function update(UpdatePostRequest $request, Post $post)
     {
         $data = $request->validated();
+        $data = PostService::updateImage($post, $data);
         PostService::update($post, $data);
 
-        return redirect()->route('admin.posts.show', compact('post'));
+        return redirect()->route('posts.index', compact('post'));
 
     }
 
@@ -76,7 +88,7 @@ class PostController extends Controller
     {
         PostService::destroy($post);
 
-        return redirect()->route('admin.posts.index');
+        return redirect()->route('posts.index');
 
     }
 }

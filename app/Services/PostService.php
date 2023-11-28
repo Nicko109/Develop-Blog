@@ -32,4 +32,22 @@ class PostService
     {
         return $post->delete();
     }
+
+    public static function updateImage(Post $post, array $data)
+    {
+        // Проверяем, предоставлен ли новый файл изображения
+        if (isset($data['image']) && $data['image'] instanceof \Illuminate\Http\UploadedFile) {
+            // Удаляем старое изображение
+            Storage::disk('public')->delete($post->image);
+
+            // Сохраняем новое изображение
+            $path = Storage::disk('public')->put('post', $data['image']);
+            $fullPath = Storage::disk('public')->url($path);
+            $data['image'] = $fullPath;
+        }
+
+        // Возвращаем обновленные данные
+        return $data;
+    }
+
 }

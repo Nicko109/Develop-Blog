@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Http\Requests\Post\StorePostRequest;
 use App\Http\Requests\Post\UpdatePostRequest;
 use App\Services\PostService;
+use Illuminate\Support\Facades\Storage;
 use Mockery\Matcher\Not;
 
 class PostController extends Controller
@@ -63,6 +64,10 @@ class PostController extends Controller
     public function update(UpdatePostRequest $request, Post $post)
     {
         $data = $request->validated();
+
+        $data = PostService::updateImage($post, $data);
+
+
         PostService::update($post, $data);
 
         return redirect()->route('admin.posts.show', compact('post'));

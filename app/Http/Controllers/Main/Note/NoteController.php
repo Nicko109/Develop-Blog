@@ -72,7 +72,7 @@ class NoteController extends Controller
         $data = $request->validated();
         NoteService::update($note, $data);
 
-        return redirect()->route('notes.index', compact('note'));
+        return redirect()->route('notes.show', compact('note'));
 
     }
 

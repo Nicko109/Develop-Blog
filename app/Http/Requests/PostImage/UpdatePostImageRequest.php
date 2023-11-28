@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Post;
+namespace App\Http\Requests\PostImage;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatePostRequest extends FormRequest
+class UpdatePostImageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,19 +22,13 @@ class UpdatePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string',
-            'content' => 'required|string',
-            'image' => 'nullable|file',
+            'image' => 'required|file',
         ];
     }
 
     public function messages()
     {
         return [
-            'title.required' => 'Это поле необходимо для заполнения',
-            'title.string' => 'Данные должны соответствовать строчному типу',
-            'content.required' => 'Это поле необходимо для заполнения',
-            'content.string' => 'Данные должны соответствовать строчному типу',
             'image.required' => 'Это поле необходимо для заполнения',
             'image.file' => 'Необходимо выбрать изобоажение',
         ];
