@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\LikedPost;
 use App\Models\Post;
 use Illuminate\Support\Facades\Storage;
 
@@ -9,7 +10,17 @@ class PostService
 {
     public static function index()
     {
-        return Post::latest()->get();
+        $posts = Post::latest()->get();
+
+        $likedPostIds = LikedPost::where('user_id', auth()->id())->get('post_id')
+            ->pluck('post_id')->toArray();
+
+        foreach ($posts as $post) {
+            if (in_array($post->id, $likedPostIds)) {
+                $post->is_liked = true;
+            }
+        }
+        return $posts;
     }
 
     public static function store(array $data) : Post
@@ -19,6 +30,21 @@ class PostService
         $data['image'] = $fullPath;
         return Post::create($data);
     }
+
+
+    public static function show(Post $post)
+    {
+        $likedPostIds = LikedPost::where('user_id', auth()->id())->get('post_id')
+            ->pluck('post_id')->toArray();
+
+        if (in_array($post->id, $likedPostIds)) {
+            $post->is_liked = true;
+        }
+
+
+        return $post;
+    }
+
 
 
     public static function update(Post $post, array $data)

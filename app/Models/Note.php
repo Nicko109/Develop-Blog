@@ -11,5 +11,16 @@ class Note extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = false;
+    protected $with = ['likedUsers'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function likedUsers()
+    {
+        return $this->belongsToMany(User::class, 'liked_notes', 'note_id', 'user_id');
+    }
 
 }

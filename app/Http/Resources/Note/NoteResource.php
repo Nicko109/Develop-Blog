@@ -17,7 +17,9 @@ class NoteResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'date' => $this->created_at->diffForHumans()
+            'date' => $this->created_at->diffForHumans(),
+            'is_liked' => $this->is_liked ?? false,
+            'likes_count' => $this->likedUsers->count()
         ];
     }
 }

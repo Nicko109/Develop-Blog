@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\LikedVideo;
 use App\Models\Post;
 use App\Models\Video;
 use Illuminate\Support\Facades\Storage;
@@ -10,7 +11,19 @@ class VideoService
 {
     public static function index()
     {
-        return Video::latest()->get();
+        $videos = Video::latest()->get();
+
+        $likedVideos = LikedVideo::where('user_id', auth()->id())->get('video_id')
+            ->pluck('video_id')->toArray();
+
+        foreach ($videos as $video) {
+            if (in_array($video->id,$likedVideos )) {
+                $video->is_liked = true;
+            }
+
+        }
+
+        return $videos;
     }
 
     public static function store(array $data) : Video
@@ -20,6 +33,21 @@ class VideoService
         $data['file'] = $fullPath;
         return Video::create($data);
     }
+
+
+
+    public static function show(Video $video)
+    {
+        $likedVideos = LikedVideo::where('user_id', auth()->id())->get('video_id')
+            ->pluck('video_id')->toArray();
+
+        if (in_array($video->id,$likedVideos )) {
+            $video->is_liked = true;
+        }
+
+        return $video;
+    }
+
 
 
     public static function update(Video $video, array $data)

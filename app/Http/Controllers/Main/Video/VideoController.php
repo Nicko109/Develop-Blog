@@ -51,6 +51,8 @@ class VideoController extends Controller
      */
     public function show(Video $video)
     {
+        $video = VideoService::show($video);
+
         $video = VideoResource::make($video)->resolve();
 
         return inertia('Video/Show', compact('video'));
@@ -88,6 +90,15 @@ class VideoController extends Controller
         VideoService::destroy($video);
 
         return redirect()->route('videos.index');
+    }
 
+    public function toggleLike(Video $video)
+    {
+        $res = auth()->user()->likedVideos()->toggle($video->id);
+
+        $data['is_liked'] = count($res['attached']) > 0;
+        $data['likes_count'] = $video->likedUsers()->count();
+
+        return $data;
     }
 }

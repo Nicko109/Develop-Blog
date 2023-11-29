@@ -19,7 +19,9 @@ class VideoResource extends JsonResource
             'title' => $this->title,
             'content' => $this->content,
             'file' => $this->file,
-            'date' => $this->created_at->diffForHumans()
+            'date' => $this->created_at->diffForHumans(),
+            'is_liked' => $this->is_liked ?? false,
+            'likes_count' => $this->likedUsers->count()
         ];
     }
 }

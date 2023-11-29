@@ -8,7 +8,6 @@
         <p class="pb-4">{{post.content}}</p>
         <div class="flex justify-between items-center mt-2">
             <div class="flex">
-
                 <svg @click.prevent="toggleLike(post)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                      stroke-width="1.5"
                      stroke="currentColor"

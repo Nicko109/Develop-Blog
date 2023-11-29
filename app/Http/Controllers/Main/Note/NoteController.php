@@ -21,8 +21,6 @@ class NoteController extends Controller
 
         $notes = NoteResource::collection($notes)->resolve();
 
-
-
         return inertia('Note/Index', compact('notes'));
     }
 
@@ -51,7 +49,10 @@ class NoteController extends Controller
      */
     public function show(Note $note)
     {
+        $note = NoteService::show($note);
+
         $note = NoteResource::make($note)->resolve();
+
         return inertia('Note/Show', compact('note'));
     }
 
@@ -85,6 +86,15 @@ class NoteController extends Controller
 
         return redirect()->route('notes.index');
 
+    }
+
+    public function toggleLike(Note $note)
+    {
+        $res = auth()->user()->likedNotes()->toggle($note->id);
+
+        $data['is_liked'] = count($res['attached']) > 0;
+        $data['likes_count'] = $note->likedUsers()->count();
+        return $data;
     }
 
 }

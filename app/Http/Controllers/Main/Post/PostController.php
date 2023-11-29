@@ -21,15 +21,6 @@ class PostController extends Controller
     {
         $posts = PostService::index();
 
-        $likedPostIds = LikedPost::where('user_id', auth()->id())->get('post_id')
-            ->pluck('post_id')->toArray();
-
-        foreach ($posts as $post) {
-            if (in_array($post->id, $likedPostIds)) {
-                $post->is_liked = true;
-            }
-        }
-
         $posts = PostResource::collection($posts)->resolve();
 
         return inertia('Post/Index', compact('posts'));
@@ -49,9 +40,7 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-
         $data = $request->validated();
-
 
         $post = PostService::store($data);
 
@@ -63,12 +52,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        $likedPostIds = LikedPost::where('user_id', auth()->id())->get('post_id')
-            ->pluck('post_id')->toArray();
-
-            if (in_array($post->id, $likedPostIds)) {
-                $post->is_liked = true;
-            }
+        $post = PostService::show($post);
 
         $post = PostResource::make($post)->resolve();
 
