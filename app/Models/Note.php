@@ -11,4 +11,5 @@ class Note extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = false;
+
 }

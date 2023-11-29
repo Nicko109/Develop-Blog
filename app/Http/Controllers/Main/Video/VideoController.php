@@ -21,6 +21,8 @@ class VideoController extends Controller
     {
         $videos = VideoService::index();
 
+        $videos = VideoResource::collection($videos)->resolve();
+
         return inertia('Video/Index', compact('videos'));
     }
 

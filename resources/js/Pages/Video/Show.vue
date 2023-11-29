@@ -3,15 +3,15 @@
         <div class="form-group mb-4">
             <Link :href="route('videos.index')" class="inline-block bg-sky-600 px-3 py-2 text-white">Назад</Link>
         </div>
-        <div class="pb-4">{{video.id}}</div>
-        <div class="pb-4">{{video.title}}</div>
-        <div class="pb-4">{{video.content}}</div>
+        <h1 class="pb-4 text-xl">{{video.title}}</h1>
         <div class="pb-4">
             <video width="320" height="240" controls>
                 <source :src="video.file" type="video/mp4">
                 Ваш браузер не поддерживает тег video.
             </video>
         </div>
+        <p class="pb-4">{{video.content}}</p>
+        <p class="text-right text-sm text-slate-500 mt-2">{{video.date}}</p>
             <div class="form-group mb-4">
                 <Link :href="route('videos.edit', video.id)" class="inline-block bg-green-600 px-3 py-2 text-white">Редактировать</Link>
             </div>

@@ -10,7 +10,7 @@ class VideoService
 {
     public static function index()
     {
-        return Video::all();
+        return Video::latest()->get();
     }
 
     public static function store(array $data) : Video

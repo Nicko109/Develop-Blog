@@ -3,10 +3,10 @@
         <div class="form-group mb-4">
             <Link :href="route('posts.index')" class="inline-block bg-sky-600 px-3 py-2 text-white">Назад</Link>
         </div>
-        <div class="pb-4">{{post.id}}</div>
-        <div class="pb-4">{{post.title}}</div>
-        <div class="pb-4">{{post.content}}</div>
-        <div class="pb-4"><img :src="post.image" alt="preview"></div>
+        <h1 class="pb-4 text-xl">{{post.title}}</h1>
+        <div class="pb-4"><img :src="post.image" :alt="post.id"></div>
+        <p class="pb-4">{{post.content}}</p>
+        <p class="text-right text-sm text-slate-500 mt-2">{{post.date}}</p>
             <div class="form-group mb-4">
                 <Link :href="route('posts.edit', post.id)" class="inline-block bg-green-600 px-3 py-2 text-white">Редактировать</Link>
             </div>

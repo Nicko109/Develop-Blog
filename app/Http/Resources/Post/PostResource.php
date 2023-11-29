@@ -19,6 +19,7 @@ class PostResource extends JsonResource
             'title' => $this->title,
             'content' => $this->content,
             'image' => $this->image,
+            'date' => $this->created_at->diffForHumans()
         ];
     }
 }

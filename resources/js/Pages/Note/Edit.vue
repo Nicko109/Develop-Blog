@@ -5,6 +5,7 @@
         </div>
         <div class="mb-4">
             <textarea v-model="title" class="rounded-full border-gray-300" type="text"></textarea>
+            <div v-if="errors.title" class="text-red-600 text-sm">{{ errors.title }}</div>
         </div>
         <div class="form-group mb-4">
             <a @click.prevent="update" href="#" class="inline-block bg-green-600 px-3 py-2 text-white">Редактировать</a>
@@ -24,7 +25,7 @@ export default {
 
     components: {Link},
 
-    props: ['note'],
+    props: ['note', 'errors'],
 
     data() {
         return {

@@ -42,7 +42,6 @@ Route::get('/main', [\App\Http\Controllers\Main\Main\IndexController::class, 'in
 
 Route::resource('/notes', \App\Http\Controllers\Main\Note\NoteController::class);
 Route::resource('/posts', \App\Http\Controllers\Main\Post\PostController::class);
-Route::resource('/users', \App\Http\Controllers\Main\User\UserController::class);
 Route::resource('/videos', \App\Http\Controllers\Main\Video\VideoController::class);
 
 

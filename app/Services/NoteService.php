@@ -8,7 +8,7 @@ class NoteService
 {
     public static function index()
     {
-        return Note::all();
+        return Note::latest()->get();
     }
 
     public static function store(array $data) : Note

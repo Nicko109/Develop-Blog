@@ -9,7 +9,7 @@ class PostService
 {
     public static function index()
     {
-        return Post::all();
+        return Post::latest()->get();
     }
 
     public static function store(array $data) : Post
