@@ -77,7 +77,7 @@ class PostController extends Controller
         $data = PostService::updateImage($post, $data);
         PostService::update($post, $data);
 
-        return redirect()->route('posts.index', compact('post'));
+        return redirect()->route('posts.show', compact('post'));
 
     }
 

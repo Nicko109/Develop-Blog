@@ -10,6 +10,9 @@
             <div class="form-group mb-4">
                 <Link :href="route('posts.edit', post.id)" class="inline-block bg-green-600 px-3 py-2 text-white">Редактировать</Link>
             </div>
+        <div class="form-group mb-4">
+            <Link as="button" method="delete" :href="route('posts.destroy', post.id)" class="inline-block bg-rose-600 px-3 py-2 text-white">Удалить</Link>
+        </div>
             <hr class="mt-4">
         </div>
 </template>

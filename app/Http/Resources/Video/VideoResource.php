@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\PostImage;
+namespace App\Http\Resources\Video;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PostImageResource extends JsonResource
+class VideoResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,8 +16,9 @@ class PostImageResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'path' => $this->path,
-            'url' => $this->url,
+            'title' => $this->title,
+            'content' => $this->content,
+            'file' => $this->file,
         ];
     }
 }

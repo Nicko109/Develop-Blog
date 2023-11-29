@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Main\Video;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Post\PostResource;
+use App\Http\Resources\Video\VideoResource;
 use App\Models\Video;
 use App\Http\Requests\Video\StoreVideoRequest;
 use App\Http\Requests\Video\UpdateVideoRequest;
+use App\Services\PostService;
 use App\Services\VideoService;
 use Mockery\Matcher\Not;
 
@@ -18,7 +21,7 @@ class VideoController extends Controller
     {
         $videos = VideoService::index();
 
-        return view('videos.index', compact('videos'));
+        return inertia('Video/Index', compact('videos'));
     }
 
     /**
@@ -26,7 +29,7 @@ class VideoController extends Controller
      */
     public function create()
     {
-        return view('videos.create');
+        return inertia('Video/Create');
     }
 
     /**
@@ -38,7 +41,7 @@ class VideoController extends Controller
 
         $video = VideoService::store($data);
 
-        return redirect()->route('admin.videos.index');
+        return redirect()->route('videos.index');
     }
 
     /**
@@ -46,7 +49,9 @@ class VideoController extends Controller
      */
     public function show(Video $video)
     {
-        return view('videos.show', compact('video'));
+        $video = VideoResource::make($video)->resolve();
+
+        return inertia('Video/Show', compact('video'));
     }
 
     /**
@@ -54,7 +59,8 @@ class VideoController extends Controller
      */
     public function edit(Video $video)
     {
-        return view('videos.edit', compact('video'));
+        $video = VideoResource::make($video)->resolve();
+        return inertia('Video/Edit', compact('video'));
     }
 
     /**
@@ -63,9 +69,12 @@ class VideoController extends Controller
     public function update(UpdateVideoRequest $request, Video $video)
     {
         $data = $request->validated();
+
+        $data = VideoService::updateFile($video, $data);
+
         VideoService::update($video, $data);
 
-        return redirect()->route('admin.videos.show', compact('video'));
+        return redirect()->route('videos.show', compact('video'));
 
     }
 
@@ -76,7 +85,7 @@ class VideoController extends Controller
     {
         VideoService::destroy($video);
 
-        return redirect()->route('admin.videos.index');
+        return redirect()->route('videos.index');
 
     }
 }

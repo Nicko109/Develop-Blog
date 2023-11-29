@@ -7,6 +7,9 @@
             <Link :href="route('posts.index')" class="inline-block bg-green-600 px-3 py-2 text-white">Посты</Link>
         </div>
         <div class="form-group mb-4">
+            <Link :href="route('videos.index')" class="inline-block bg-purple-600 px-3 py-2 text-white">Видео</Link>
+        </div>
+        <div class="form-group mb-4">
             <Link as="button" method="post" :href="route('logout')" class="inline-block bg-rose-600 px-3 py-2 text-white">Выйти</Link>
         </div>
     </div>

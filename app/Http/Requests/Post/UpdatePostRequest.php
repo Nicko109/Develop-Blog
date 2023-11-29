@@ -24,7 +24,7 @@ class UpdatePostRequest extends FormRequest
         return [
             'title' => 'required|string',
             'content' => 'required|string',
-            'image' => 'nullable|file',
+            'image' => 'nullable',
         ];
     }
 
@@ -35,8 +35,6 @@ class UpdatePostRequest extends FormRequest
             'title.string' => 'Данные должны соответствовать строчному типу',
             'content.required' => 'Это поле необходимо для заполнения',
             'content.string' => 'Данные должны соответствовать строчному типу',
-            'image.required' => 'Это поле необходимо для заполнения',
-            'image.file' => 'Необходимо выбрать изобоажение',
         ];
     }
 }

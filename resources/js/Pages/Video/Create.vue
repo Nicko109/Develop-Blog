@@ -36,21 +36,21 @@ export default {
         return {
             title: '',
             content: '',
-            image: null,
+            file: null,
         }
     },
 
     methods: {
 
         initFile(e) {
-            this.image = new FormData()
-            this.image.append('image', e.target.files[0])
+            this.file = new FormData()
+            this.file.append('file', e.target.files[0])
         },
 
         store() {
-            this.image.append('title',  this.title);
-            this.image.append('content',  this.content);
-            router.post('/posts', this.image)
+            this.file.append('title',  this.title);
+            this.file.append('content',  this.content);  // добавил эту строку, чтобы передать контент
+            router.post('/videos', this.file)
         }
     }
 }

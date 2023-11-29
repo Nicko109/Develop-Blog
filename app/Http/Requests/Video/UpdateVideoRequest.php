@@ -24,7 +24,7 @@ class UpdateVideoRequest extends FormRequest
         return [
             'title' => 'required|string',
             'content' => 'required|string',
-            'file' => 'required|file',
+            'file' => 'nullable',
         ];
     }
 
@@ -35,8 +35,7 @@ class UpdateVideoRequest extends FormRequest
             'title.string' => 'Данные должны соответствовать строчному типу',
             'content.required' => 'Это поле необходимо для заполнения',
             'content.string' => 'Данные должны соответствовать строчному типу',
-            'file.required' => 'Это поле необходимо для заполнения',
-            'file.file' => 'Необходимо выбрать изобоажение',
+            'file.file' => 'Необходимо выбрать видеофайл',
         ];
     }
 }

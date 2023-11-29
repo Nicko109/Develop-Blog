@@ -10,8 +10,8 @@
             <div class="mb-4">
                 <label for="file"></label>
                 <input @change="initFile" id="file" type="file">
-                <div v-if="image" class="text-green-600 text-sm">
-                    {{post.image}}
+                <div v-if="file" class="text-green-600 text-sm">
+                    {{video.file}}
                 </div>
 
             </div>
@@ -35,29 +35,29 @@ export default {
 
     components: {Link},
 
-    props: ['post'],
+    props: ['video'],
 
     data() {
         return {
-            title: this.post.title,
-            content: this.post.content,
-            image: this.post.image,
+            title: this.video.title,
+            content: this.video.content,
+            file: this.video.file,
         }
     },
 
     methods: {
 
         initFile(e) {
-            this.image = e.target.files[0]
+            this.file = e.target.files[0]
         },
 
         update() {
             let formData = new FormData();
             formData.append('title', this.title);
             formData.append('content', this.content);
-            formData.append('image', this.image);
+            formData.append('file', this.file);
             formData.append('_method', 'PATCH')
-            router.post(`/posts/${this.post.id}`,  formData,
+            router.post(`/videos/${this.video.id}`,  formData,
                 { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
         }
     }
