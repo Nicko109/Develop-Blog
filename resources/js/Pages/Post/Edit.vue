@@ -64,6 +64,3 @@ export default {
 }
 </script>
 
-<style scoped>
-/* Ваши стили могут быть добавлены сюда */
-</style>
