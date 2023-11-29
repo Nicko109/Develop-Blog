@@ -45,6 +45,9 @@ Route::resource('/posts', \App\Http\Controllers\Main\Post\PostController::class)
 Route::resource('/videos', \App\Http\Controllers\Main\Video\VideoController::class);
 
 
+Route::post('/posts/{post}/toggle_like', [\App\Http\Controllers\Main\Post\PostController::class, 'toggleLike']);
+
+
 
 Route::group([
     'prefix' => 'admin',

@@ -5,13 +5,12 @@
         </div>
         <h1 class="pb-4 text-xl">{{note.title}}</h1>
         <p class="text-right text-sm text-slate-500 mt-2">{{note.date}}</p>
-            <div class="form-group mb-4">
-                <Link :href="route('notes.edit', note.id)" class="inline-block bg-green-600 px-3 py-2 text-white">Редактировать</Link>
-            </div>
-        <div class="form-group mb-4">
-            <Link method="delete" :href="route('notes.destroy', note.id)" class="inline-block bg-rose-600 px-3 py-2 text-white">Удалить</Link>
+        <div class="form-group my-4 flex items-center justify-between">
+            <Link :href="route('notes.edit', note.id)" class="inline-block bg-green-600 px-3 py-2 text-white">Редактировать</Link>
+            <Link as="button" method="delete" :href="route('notes.destroy', note.id)" class="inline-block bg-rose-600 px-3 py-2 text-white">Удалить</Link>
         </div>
-            <hr class="mt-4">
+
+        
         </div>
 </template>
 

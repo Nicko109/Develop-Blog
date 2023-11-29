@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Post\StorePostRequest;
 use App\Http\Requests\Post\UpdatePostRequest;
 use App\Http\Resources\Post\PostResource;
+use App\Models\LikedPost;
+use App\Models\Note;
 use App\Models\Post;
 use App\Services\PostService;
 use Illuminate\Http\Request;
@@ -18,6 +20,15 @@ class PostController extends Controller
     public function index()
     {
         $posts = PostService::index();
+
+        $likedPostIds = LikedPost::where('user_id', auth()->id())->get('post_id')
+            ->pluck('post_id')->toArray();
+
+        foreach ($posts as $post) {
+            if (in_array($post->id, $likedPostIds)) {
+                $post->is_liked = true;
+            }
+        }
 
         $posts = PostResource::collection($posts)->resolve();
 
@@ -52,6 +63,13 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        $likedPostIds = LikedPost::where('user_id', auth()->id())->get('post_id')
+            ->pluck('post_id')->toArray();
+
+            if (in_array($post->id, $likedPostIds)) {
+                $post->is_liked = true;
+            }
+
         $post = PostResource::make($post)->resolve();
 
         return inertia('Post/Show', compact('post'));
@@ -94,5 +112,14 @@ class PostController extends Controller
 
         return redirect()->route('posts.index');
 
+    }
+
+    public function toggleLike(Post $post)
+    {
+        $res = auth()->user()->likedPosts()->toggle($post->id);
+
+        $data['is_liked'] = count($res['attached']) > 0;
+        $data['likes_count'] = $post->likedUsers()->count();
+        return $data;
     }
 }
