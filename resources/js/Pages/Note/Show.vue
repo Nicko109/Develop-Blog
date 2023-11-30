@@ -3,7 +3,7 @@
         <div class="form-group mb-4">
             <Link :href="route('notes.index')" class="inline-block bg-sky-600 px-3 py-2 text-white">Назад</Link>
         </div>
-        <h1 class="pb-4 text-xl">{{note.title}}</h1>
+        <h1 style="word-break: break-word;" class="pb-4 text-xl">{{note.title}}</h1>
         <div class="flex justify-between items-center mt-2">
             <div class="flex">
                 <svg @click.prevent="toggleLike(note)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -17,12 +17,39 @@
             </div>
             <p class="text-right text-sm text-slate-500">{{note.date}}</p>
         </div>
+        <div v-if="note.comments_count > 0" class="mt-4">
+            <p class="pb-4 text-xl link-text" v-if="!isShowed" @click="getComments(note)">
+                Показать {{ note.comments_count }} комментарий
+            </p>
+            <p class="pb-4 text-xl link-text" v-if="isShowed" @click="isShowed = false">Закрыть</p>
+            <div v-if="comments && isShowed">
+                <div v-for="comment in comments" class="mt-4 pt-4 border-t border-gray-300">
+                    <p class="text-sm">{{ comment.user.name }}</p>
+                    <p style="word-break: break-word;">{{ comment.body }}</p>
+                    <p class="text-right text-sm text-slate-500">{{ comment.date }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <div class=" mb-3">
+                <input v-model="body" class="w-96 border p-2 border-slate-300" type="text"
+                       placeholder="Добавить комментарий">
+            </div>
+            <div class="mb-3" v-if="errors.body">
+                <p v-for="error in errors.body" class="text-sm mt-2 text-red-500">{{error}}</p>
+            </div>
+            <div class="form-group mb-4">
+                <a @click.prevent="storeComment(note)" href="#"
+                   class="inline-block bg-sky-600 px-3 py-2 text-white">
+                    Комментировать
+                </a>
+            </div>
         <div class="form-group my-4 flex items-center justify-between">
             <Link :href="route('notes.edit', note.id)" class="inline-block bg-green-600 px-3 py-2 text-white">Редактировать</Link>
             <Link as="button" method="delete" :href="route('notes.destroy', note.id)" class="inline-block bg-rose-600 px-3 py-2 text-white">Удалить</Link>
         </div>
 
-
+        </div>
         </div>
 </template>
 
@@ -35,6 +62,14 @@ export default {
     name: "Show",
 
     props:['note'],
+    data() {
+        return {
+            body: "",
+            comments: [],
+            errors: [],
+            isShowed: false,
+        };
+    },
 
     components: {Link},
 
@@ -48,7 +83,32 @@ export default {
                 .catch(error => {
                     console.error("Ошибка при обновлении лайка:", error);
                 });
-        }
+        },
+        storeComment(note) {
+            axios
+                .post(`/notes/${note.id}/comment`, {body: this.body})
+                .then((res) => {
+                    this.body = "";
+                    this.comments.unshift(res.data.data);
+                    note.comments_count++;
+                    this.isShowed = true;
+                })
+                .catch((e) => {
+                    this.errors = e.response.data.errors
+                });
+        },
+
+        getComments(note) {
+            axios
+                .get(`/notes/${note.id}/comment`)
+                .then((res) => {
+                    this.comments = res.data.data;
+                    this.isShowed = true;
+                })
+                .catch((error) => {
+                    console.error("Ошибка при получении комментариев:", error);
+                });
+        },
 
     },
 
@@ -57,5 +117,13 @@ export default {
 </script>
 
 <style scoped>
+.link-text {
+    font-size: medium;
+    transition: color 0.3s;
+    cursor: pointer;
+}
 
+.link-text:hover {
+    color: blue;
+}
 </style>

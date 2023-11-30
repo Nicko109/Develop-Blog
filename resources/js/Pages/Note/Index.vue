@@ -38,7 +38,7 @@
                     <div v-for="comment in comments" class="mt-4 pt-4 border-t border-gray-300">
                         <p class="text-sm">{{ comment.user.name }}</p>
                         <p style="word-break: break-word;">{{ comment.body }}</p>
-                        <p class="text-right text-sm">{{ comment.date }}</p>
+                        <p class="text-right text-sm text-slate-500">{{ comment.date }}</p>
                     </div>
                 </div>
             </div>
@@ -46,6 +46,9 @@
                 <div class=" mb-3">
                     <input v-model="body" class="w-96 border p-2 border-slate-300" type="text"
                            placeholder="Добавить комментарий">
+                </div>
+                <div class="mb-3" v-if="errors.body">
+                    <p v-for="error in errors.body" class="text-sm mt-2 text-red-500">{{ error }}</p>
                 </div>
                 <div class="form-group mb-4">
                     <a @click.prevent="storeComment(note)" href="#"
@@ -85,6 +88,7 @@ export default {
             body: "",
             comments: [],
             isShowed: false,
+            errors: [],
         };
     },
 
@@ -98,9 +102,6 @@ export default {
                     note.is_liked = res.data.is_liked;
                     note.likes_count = res.data.likes_count;
                 })
-                .catch((error) => {
-                    console.error("Ошибка при обновлении лайка:", error);
-                });
         },
 
         storeComment(note) {
@@ -112,9 +113,10 @@ export default {
                     note.comments_count++;
                     this.isShowed = true;
                 })
-                .catch((error) => {
-                    console.error("Ошибка при добавлении комментария:", error);
-                });
+                .catch(e => {
+                    this.errors = e.response.data.errors
+                })
+
         },
 
         getComments(note) {
@@ -124,9 +126,7 @@ export default {
                     this.comments = res.data.data;
                     this.isShowed = true;
                 })
-                .catch((error) => {
-                    console.error("Ошибка при получении комментариев:", error);
-                });
+
         },
     },
 

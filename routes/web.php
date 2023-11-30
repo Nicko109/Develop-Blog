@@ -38,6 +38,8 @@ Route::middleware('auth')->group(function () {
 
 
 
+
+Route::middleware('auth')->group(function () {
 Route::get('/main', [\App\Http\Controllers\Main\Main\IndexController::class, 'index'])->name('main.index');
 
 Route::resource('/notes', \App\Http\Controllers\Main\Note\NoteController::class);
@@ -57,7 +59,7 @@ Route::resource('/videos', \App\Http\Controllers\Main\Video\VideoController::cla
 Route::post('/videos/{video}/toggle_like', [\App\Http\Controllers\Main\Video\VideoController::class, 'toggleLike']);
 Route::post('/videos/{video}/comment', [\App\Http\Controllers\Main\Video\VideoController::class, 'comment']);
 Route::get('/videos/{video}/comment', [\App\Http\Controllers\Main\Video\VideoController::class, 'commentList']);
-
+});
 
 
 
@@ -70,6 +72,7 @@ Route::get('/videos/{video}/comment', [\App\Http\Controllers\Main\Video\VideoCon
 Route::group([
     'prefix' => 'admin',
     'as' => 'admin.',
+    'middleware' => ['auth', 'admin.check'],
 ], function () {
     Route::get('/', [\App\Http\Controllers\Admin\Main\IndexController::class, 'index'])->name('main.index');
 

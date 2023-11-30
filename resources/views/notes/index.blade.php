@@ -41,7 +41,7 @@
                                 @foreach($notes as $note)
                                     <tr>
                                         <td>{{ $note->id }}</td>
-                                        <td><a href="{{ route('admin.notes.show', $note->id) }}">{{ $note->title }}</a></td>
+                                        <td><a  href="{{ route('admin.notes.show', $note->id) }}">{{ $note->title }}</a></td>
                                     </tr>
                                 @endforeach
                                 </tbody>
