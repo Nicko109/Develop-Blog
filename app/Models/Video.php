@@ -11,6 +11,7 @@ class Video extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = false;
+    protected $withCount = ['comments'];
     protected $with = ['likedUsers'];
 
     public function user()
@@ -21,5 +22,10 @@ class Video extends Model
     public function likedUsers()
     {
         return $this->belongsToMany(User::class, 'liked_videos', 'video_id', 'user_id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(VideoComment::class, 'video_id', 'id');
     }
 }

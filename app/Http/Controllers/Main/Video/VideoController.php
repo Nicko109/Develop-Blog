@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Main\Video;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Post\CommentRequest;
+use App\Http\Resources\Comment\CommentResource;
 use App\Http\Resources\Post\PostResource;
 use App\Http\Resources\Video\VideoResource;
 use App\Models\Video;
 use App\Http\Requests\Video\StoreVideoRequest;
 use App\Http\Requests\Video\UpdateVideoRequest;
+use App\Models\VideoComment;
 use App\Services\PostService;
 use App\Services\VideoService;
 use Mockery\Matcher\Not;
@@ -101,4 +104,25 @@ class VideoController extends Controller
 
         return $data;
     }
+
+    public function comment(Video $video, CommentRequest $request)
+    {
+        $data = $request->validated();
+
+        $data['video_id'] = $video->id;
+        $data['user_id'] = auth()->id();
+
+        $comment = VideoComment::create($data);
+
+        return new CommentResource($comment);
+
+    }
+
+    public function commentList(Video $video)
+    {
+        $comments = $video->comments()->latest()->get();
+
+        return CommentResource::collection($comments);
+    }
+
 }

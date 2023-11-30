@@ -11,6 +11,8 @@ class Note extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = false;
+    protected $withCount = ['comments'];
+
     protected $with = ['likedUsers'];
 
     public function user()
@@ -21,6 +23,11 @@ class Note extends Model
     public function likedUsers()
     {
         return $this->belongsToMany(User::class, 'liked_notes', 'note_id', 'user_id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(NoteComment::class, 'note_id', 'id');
     }
 
 }

@@ -11,6 +11,7 @@ class Post extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = false;
+    protected $withCount = ['comments'];
 
     protected $with = ['likedUsers'];
 
@@ -22,6 +23,11 @@ class Post extends Model
     public function likedUsers()
     {
         return $this->belongsToMany(User::class, 'liked_posts', 'post_id', 'user_id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'post_id', 'id');
     }
 
 }

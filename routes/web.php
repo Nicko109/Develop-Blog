@@ -42,13 +42,21 @@ Route::get('/main', [\App\Http\Controllers\Main\Main\IndexController::class, 'in
 
 Route::resource('/notes', \App\Http\Controllers\Main\Note\NoteController::class);
 Route::post('/notes/{note}/toggle_like', [\App\Http\Controllers\Main\Note\NoteController::class, 'toggleLike']);
+Route::post('/notes/{note}/comment', [\App\Http\Controllers\Main\Note\NoteController::class, 'comment']);
+Route::get('/notes/{note}/comment', [\App\Http\Controllers\Main\Note\NoteController::class, 'commentList']);
+
+
 
 Route::resource('/posts', \App\Http\Controllers\Main\Post\PostController::class);
 Route::post('/posts/{post}/toggle_like', [\App\Http\Controllers\Main\Post\PostController::class, 'toggleLike']);
+Route::post('/posts/{post}/comment', [\App\Http\Controllers\Main\Post\PostController::class, 'comment']);
+Route::get('/posts/{post}/comment', [\App\Http\Controllers\Main\Post\PostController::class, 'commentList']);
 
 
 Route::resource('/videos', \App\Http\Controllers\Main\Video\VideoController::class);
 Route::post('/videos/{video}/toggle_like', [\App\Http\Controllers\Main\Video\VideoController::class, 'toggleLike']);
+Route::post('/videos/{video}/comment', [\App\Http\Controllers\Main\Video\VideoController::class, 'comment']);
+Route::get('/videos/{video}/comment', [\App\Http\Controllers\Main\Video\VideoController::class, 'commentList']);
 
 
 

@@ -4,9 +4,10 @@
             <h1 style="color: blue">Видео</h1>
             <Link :href="route('videos.create')" class="inline-block bg-sky-600 px-3 py-2 text-white">Добавить</Link>
         </div>
+
     <div class="mb-6 pb-6 border-b border-gray-400" v-for="video in videos">
         <Link :href="route('videos.show', video.id)">
-            <h1 class="pb-4 text-xl link-text">{{video.title}}</h1>
+            <h1 style="word-break: break-word;" class="pb-4 text-xl link-text">{{video.title}}</h1>
         </Link>
         <div class="pb-4">
             <video width="320" height="240" controls>
@@ -14,7 +15,7 @@
                 Ваш браузер не поддерживает тег video.
             </video>
         </div>
-        <p class="pb-4">{{video.content}}</p>
+        <p style="word-break: break-word;" class="pb-4">{{video.content}}</p>
         <div class="flex justify-between items-center mt-2">
             <div class="flex">
 
@@ -29,10 +30,36 @@
             </div>
             <p class="text-right text-sm text-slate-500">{{video.date}}</p>
         </div>
+        <div v-if="video.comments_count > 0" class="mt-4">
+            <p class="pb-4 text-xl link-text" v-if="!isShowed" @click="getComments(video)">
+                Показать {{ video.comments_count }} комментарий
+            </p>
+            <p class="pb-4 text-xl link-text" v-if="isShowed" @click="isShowed = false">Закрыть</p>
+            <div v-if="comments && isShowed">
+                <div v-for="comment in comments" class="mt-4 pt-4 border-t border-gray-300">
+                    <p class="text-sm">{{ comment.user.name }}</p>
+                    <p style="word-break: break-word;">{{ comment.body }}</p>
+                    <p class="text-right text-sm">{{ comment.date }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <div class=" mb-3">
+                <input v-model="body" class="w-96 border p-2 border-slate-300" type="text"
+                       placeholder="Добавить комментарий">
+            </div>
+            <div class="form-group mb-4">
+                <a @click.prevent="storeComment(video)" href="#"
+                   class="inline-block bg-sky-600 px-3 py-2 text-white">
+                    Комментировать
+                </a>
+            </div>
+        </div>
         <div class="form-group my-4 flex items-center justify-between">
             <Link :href="route('videos.edit', video.id)" class="inline-block bg-green-600 px-3 py-2 text-white">Редактировать</Link>
             <Link as="button" method="delete" :href="route('videos.destroy', video.id)" class="inline-block bg-rose-600 px-3 py-2 text-white">Удалить</Link>
         </div>
+
     </div>
 </div>
 </template>
@@ -46,6 +73,13 @@ export default {
     name: "Index",
 
     props:['videos'],
+    data() {
+        return {
+            body: "",
+            comments: [],
+            isShowed: false,
+        };
+    },
 
     components: {Link},
 
@@ -56,10 +90,26 @@ export default {
               video.is_liked = res.data.is_liked;
               video.likes_count = res.data.likes_count;
           })
-              .catch(error => {
-                  console.error("Ошибка при обновлении лайка:", error);
-              });
-      }
+      },
+        storeComment(video) {
+            axios
+                .post(`/videos/${video.id}/comment`, {body: this.body})
+                .then((res) => {
+                    this.body = "";
+                    this.comments.unshift(res.data.data);
+                    video.comments_count++;
+                    this.isShowed = true;
+                })
+        },
+
+        getComments(video) {
+            axios
+                .get(`/videos/${video.id}/comment`)
+                .then((res) => {
+                    this.comments = res.data.data;
+                    this.isShowed = true;
+                })
+        },
     },
 
     layout: MainLayout
@@ -67,11 +117,12 @@ export default {
 </script>
 <style scoped>
 .link-text {
-    transition: color 0.3s; /* добавлен переход для плавного изменения цвета */
+    transition: color 0.3s;
+    cursor: pointer;
 }
 
 .link-text:hover {
-    color: blue; /* цвет при наведении */
+    color: blue;
 }
 </style>
 

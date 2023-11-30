@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Resources\Note;
+namespace App\Http\Resources\Comment;
 
+use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class NoteResource extends JsonResource
+class CommentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +17,9 @@ class NoteResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
+            'body' => $this->body,
             'date' => $this->created_at->diffForHumans(),
-            'is_liked' => $this->is_liked ?? false,
-            'likes_count' => $this->likedUsers->count(),
-            'comments_count' => $this->comments_count
+            'user' => new UserResource($this->user)
         ];
     }
 }

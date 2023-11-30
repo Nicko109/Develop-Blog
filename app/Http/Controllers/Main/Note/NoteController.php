@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Main\Note;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Post\CommentRequest;
+use App\Http\Resources\Comment\CommentResource;
 use App\Http\Resources\Note\NoteResource;
 use App\Models\Note;
 use App\Http\Requests\Note\StoreNoteRequest;
 use App\Http\Requests\Note\UpdateNoteRequest;
+use App\Models\NoteComment;
 use App\Services\NoteService;
 use Mockery\Matcher\Not;
 
@@ -95,6 +98,24 @@ class NoteController extends Controller
         $data['is_liked'] = count($res['attached']) > 0;
         $data['likes_count'] = $note->likedUsers()->count();
         return $data;
+    }
+
+    public function comment(Note $note, CommentRequest $request)
+    {
+        $data = $request->validated();
+        $data['note_id'] = $note->id;
+        $data['user_id'] = auth()->id();
+
+        $comment = NoteComment::create($data);
+
+        return new CommentResource($comment);
+    }
+
+    public function commentList(Note $note)
+    {
+        $comments = $note->comments()->latest()->get();
+
+        return CommentResource::collection($comments);
     }
 
 }
