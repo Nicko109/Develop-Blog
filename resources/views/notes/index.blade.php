@@ -26,11 +26,11 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <a href="{{ route('admin.notes.create') }}" class="btn btn-primary">Добавить</a>
+                            <a  href="{{ route('admin.notes.create') }}" class="btn btn-primary">Добавить</a>
                         </div>
 
                         <div class="card-body table-responsive p-0">
-                            <table class="table table-hover text-nowrap">
+                            <table class="table table-hover text-wrap">
                                 <thead>
                                 <tr>
                                     <th>ID</th>

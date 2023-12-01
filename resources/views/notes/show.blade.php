@@ -37,7 +37,7 @@
                         </div>
 
                         <div class="card-body table-responsive p-0">
-                            <table class="table table-hover text-nowrap">
+                            <table class="table table-hover text-wrap">
                                 <thead>
                                 <tr>
                                     <th>ID</th>
@@ -47,7 +47,7 @@
                                 <tbody>
                                 <tr>
                                     <td>{{ $note->id }}</td>
-                                    <td>{{ $note->title }}</td>
+                                    <td class="text-wrap">{{ $note->title }}</td>
                                 </tr>
                                 </tbody>
                             </table>

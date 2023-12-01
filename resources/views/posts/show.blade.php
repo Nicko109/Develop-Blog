@@ -48,8 +48,8 @@
                                 <tbody>
                                 <tr>
                                     <td>{{ $post->id }}</td>
-                                    <td>{{ $post->title }}</td>
-                                    <td>{{ $post->content }}</td>
+                                    <td class="text-wrap">{{ $post->title }}</td>
+                                    <td class="text-wrap">{{ $post->content }}</td>
                                 </tr>
                                 </tbody>
                             </table>
