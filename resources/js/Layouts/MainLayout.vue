@@ -9,7 +9,7 @@
         <div class="form-group mb-4">
             <Link :href="route('videos.index')" class="inline-block bg-purple-600 px-3 py-2 text-white">Видео</Link>
         </div>
-        <div  class="form-group mb-4">
+        <div v-if="isAdmin" class="form-group mb-4">
             <a :href="route('admin.main.index')" class="inline-block bg-orange-600 px-3 py-2 text-white">Админ</a>
         </div>
         <div class="form-group mb-4">
@@ -27,6 +27,8 @@ import { Link } from "@inertiajs/vue3";
 export default {
     name: "MainLayout",
 
+
+    props: ["isAdmin"],
     components: { Link },
 
 }

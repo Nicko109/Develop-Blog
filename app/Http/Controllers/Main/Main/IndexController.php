@@ -13,7 +13,8 @@ class IndexController extends Controller
 {
     public function index()
     {
+        $isAdmin = auth()->user()->is_admin;
 
-        return inertia('Main');
+        return inertia('Main', compact('isAdmin'));
     }
 }

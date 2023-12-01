@@ -1,6 +1,6 @@
 <template>
     <div class="w-96 mx-auto">
-        <div class="form-group mb-4 flex items-center justify-between mb-6 pb-6 border-b border-gray-400">
+        <div v-if="isAdmin" class="form-group mb-4 flex items-center justify-between mb-6 pb-6 border-b border-gray-400">
             <h1 style="color: blue">Видео</h1>
             <Link :href="route('videos.create')" class="inline-block bg-sky-600 px-3 py-2 text-white">Добавить</Link>
         </div>
@@ -45,11 +45,11 @@
         </div>
         <div class="mt-4">
             <div class=" mb-3">
-                <input v-model="body" class="w-96 border p-2 border-slate-300" type="text"
+                <input v-model="commentsData[video.id]" class="w-96 border p-2 border-slate-300" type="text"
                        placeholder="Добавить комментарий">
             </div>
-            <div class="mb-3" v-if="errors.body">
-                <p v-for="error in errors.body" class="text-sm mt-2 text-red-500">{{ error }}</p>
+            <div class="mb-3" v-if="errors[video.id] && errors[video.id].body">
+                <p v-for="error in errors[video.id].body" class="text-sm mt-2 text-red-500">{{ error }}</p>
             </div>
             <div class="form-group mb-4">
                 <a @click.prevent="storeComment(video)" href="#"
@@ -58,13 +58,21 @@
                 </a>
             </div>
         </div>
-        <div class="form-group my-4 flex items-center justify-between">
-            <Link :href="route('videos.edit', video.id)" class="inline-block bg-green-600 px-3 py-2 text-white">Редактировать</Link>
-            <Link as="button" method="delete" :href="route('videos.destroy', video.id)" class="inline-block bg-rose-600 px-3 py-2 text-white">Удалить</Link>
+        <div v-if="isAdmin"  class="form-group my-4 flex items-center justify-between">
+            <Link :href="route('videos.edit', video.id)" class="inline-block bg-green-600 px-3 py-2 text-white">
+                Редактировать {{}}
+            </Link>
+            <Link
+                as="button"
+                method="delete"
+                :href="route('videos.destroy', video.id)"
+                class="inline-block bg-rose-600 px-3 py-2 text-white"
+            >
+                Удалить
+            </Link>
         </div>
-
     </div>
-</div>
+    </div>
 </template>
 
 <script>
@@ -75,10 +83,10 @@ import axios from "axios";
 export default {
     name: "Index",
 
-    props:['videos'],
+    props:['videos', "isAdmin"],
     data() {
         return {
-            body: "",
+            commentsData: {},
             comments: [],
             errors: [],
             isShowed: false,
@@ -97,15 +105,15 @@ export default {
       },
         storeComment(video) {
             axios
-                .post(`/videos/${video.id}/comment`, {body: this.body})
+                .post(`/videos/${video.id}/comment`, {body: this.commentsData[video.id] || ""})
                 .then((res) => {
-                    this.body = "";
+                    this.commentsData[video.id] = "";
                     this.comments.unshift(res.data.data);
                     video.comments_count++;
                     this.isShowed = true;
                 })
                 .catch(e => {
-                    this.errors = e.response.data.errors
+                    this.errors = { ...this.errors, [video.id]: e.response.data.errors };
                 })
         },
 
@@ -113,6 +121,7 @@ export default {
             axios
                 .get(`/videos/${video.id}/comment`)
                 .then((res) => {
+                    this.commentsData[video.id] = "";
                     this.comments = res.data.data;
                     this.isShowed = true;
                 })

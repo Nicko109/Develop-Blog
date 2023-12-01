@@ -1,6 +1,6 @@
 <template>
     <div class="w-96 mx-auto">
-        <div class="form-group mb-4 flex items-center justify-between mb-6 pb-6 border-b border-gray-400">
+        <div v-if="isAdmin" class="form-group mb-4 flex items-center justify-between mb-6 pb-6 border-b border-gray-400">
             <h1 style="color: blue">Заметки</h1>
             <Link :href="route('notes.create')" class="inline-block bg-sky-600 px-3 py-2 text-white">Добавить</Link>
         </div>
@@ -44,11 +44,11 @@
             </div>
             <div class="mt-4">
                 <div class=" mb-3">
-                    <input v-model="body" class="w-96 border p-2 border-slate-300" type="text"
+                    <input v-model="commentsData[note.id]" class="w-96 border p-2 border-slate-300" type="text"
                            placeholder="Добавить комментарий">
                 </div>
-                <div class="mb-3" v-if="errors.body">
-                    <p v-for="error in errors.body" class="text-sm mt-2 text-red-500">{{ error }}</p>
+                <div class="mb-3" v-if="errors[note.id] && errors[note.id].body">
+                    <p v-for="error in errors[note.id].body" class="text-sm mt-2 text-red-500">{{ error }}</p>
                 </div>
                 <div class="form-group mb-4">
                     <a @click.prevent="storeComment(note)" href="#"
@@ -57,9 +57,9 @@
                     </a>
                 </div>
             </div>
-            <div class="form-group my-4 flex items-center justify-between">
+            <div v-if="isAdmin"  class="form-group my-4 flex items-center justify-between">
                 <Link :href="route('notes.edit', note.id)" class="inline-block bg-green-600 px-3 py-2 text-white">
-                    Редактировать
+                    Редактировать {{}}
                 </Link>
                 <Link
                     as="button"
@@ -82,13 +82,13 @@ import axios from "axios";
 export default {
     name: "Index",
 
-    props: ["notes"],
+    props: ["notes", "isAdmin"],
     data() {
         return {
-            body: "",
+            commentsData: {},
             comments: [],
             isShowed: false,
-            errors: [],
+            errors: {},
         };
     },
 
@@ -106,27 +106,26 @@ export default {
 
         storeComment(note) {
             axios
-                .post(`/notes/${note.id}/comment`, {body: this.body})
+                .post(`/notes/${note.id}/comment`, {body: this.commentsData[note.id] || ""})
                 .then((res) => {
-                    this.body = "";
+                    this.commentsData[note.id] = "";
                     this.comments.unshift(res.data.data);
                     note.comments_count++;
                     this.isShowed = true;
                 })
                 .catch(e => {
-                    this.errors = e.response.data.errors
+                    this.errors = { ...this.errors, [note.id]: e.response.data.errors };
                 })
-
         },
 
         getComments(note) {
             axios
                 .get(`/notes/${note.id}/comment`)
                 .then((res) => {
+                    this.commentsData[note.id] = "";
                     this.comments = res.data.data;
                     this.isShowed = true;
                 })
-
         },
     },
 

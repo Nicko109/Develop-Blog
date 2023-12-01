@@ -32,11 +32,11 @@
         </div>
         <div class="mt-4">
             <div class=" mb-3">
-                <input v-model="body" class="w-96 border p-2 border-slate-300" type="text"
+                <input v-model="commentsData[note.id]" class="w-96 border p-2 border-slate-300" type="text"
                        placeholder="Добавить комментарий">
             </div>
-            <div class="mb-3" v-if="errors.body">
-                <p v-for="error in errors.body" class="text-sm mt-2 text-red-500">{{error}}</p>
+            <div class="mb-3" v-if="errors[note.id] && errors[note.id].body">
+                <p v-for="error in errors[note.id].body" class="text-sm mt-2 text-red-500">{{ error }}</p>
             </div>
             <div class="form-group mb-4">
                 <a @click.prevent="storeComment(note)" href="#"
@@ -44,13 +44,22 @@
                     Комментировать
                 </a>
             </div>
-        <div class="form-group my-4 flex items-center justify-between">
-            <Link :href="route('notes.edit', note.id)" class="inline-block bg-green-600 px-3 py-2 text-white">Редактировать</Link>
-            <Link as="button" method="delete" :href="route('notes.destroy', note.id)" class="inline-block bg-rose-600 px-3 py-2 text-white">Удалить</Link>
         </div>
+        <div v-if="isAdmin"  class="form-group my-4 flex items-center justify-between">
+            <Link :href="route('notes.edit', note.id)" class="inline-block bg-green-600 px-3 py-2 text-white">
+                Редактировать {{}}
+            </Link>
+            <Link
+                as="button"
+                method="delete"
+                :href="route('notes.destroy', note.id)"
+                class="inline-block bg-rose-600 px-3 py-2 text-white"
+            >
+                Удалить
+            </Link>
+        </div>
+    </div>
 
-        </div>
-        </div>
 </template>
 
 <script>
@@ -61,10 +70,10 @@ import axios from "axios";
 export default {
     name: "Show",
 
-    props:['note'],
+    props:['note', "isAdmin"],
     data() {
         return {
-            body: "",
+            commentsData: {},
             comments: [],
             errors: [],
             isShowed: false,
@@ -86,15 +95,15 @@ export default {
         },
         storeComment(note) {
             axios
-                .post(`/notes/${note.id}/comment`, {body: this.body})
+                .post(`/notes/${note.id}/comment`, {body: this.commentsData[note.id] || ""})
                 .then((res) => {
-                    this.body = "";
+                    this.commentsData[note.id] = "";
                     this.comments.unshift(res.data.data);
                     note.comments_count++;
                     this.isShowed = true;
                 })
                 .catch((e) => {
-                    this.errors = e.response.data.errors
+                    this.errors = { ...this.errors, [note.id]: e.response.data.errors };
                 });
         },
 
@@ -102,12 +111,11 @@ export default {
             axios
                 .get(`/notes/${note.id}/comment`)
                 .then((res) => {
+                    this.commentsData[note.id] = "";
                     this.comments = res.data.data;
                     this.isShowed = true;
                 })
-                .catch((error) => {
-                    console.error("Ошибка при получении комментариев:", error);
-                });
+
         },
 
     },

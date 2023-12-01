@@ -44,7 +44,7 @@
                    class="inline-block bg-sky-600 px-3 py-2 text-white">Комментировать</a>
             </div>
         </div>
-        <div class="form-group my-4 flex items-center justify-between">
+        <div v-if="isAdmin" class="form-group my-4 flex items-center justify-between">
             <Link :href="route('posts.edit', post.id)" class="inline-block bg-green-600 px-3 py-2 text-white">Редактировать</Link>
             <Link as="button" method="delete" :href="route('posts.destroy', post.id)" class="inline-block bg-rose-600 px-3 py-2 text-white">Удалить</Link>
         </div>
@@ -59,7 +59,7 @@ import axios from "axios";
 export default {
     name: "Show",
 
-    props:['post'],
+    props:['post', "isAdmin"],
     data() {
         return {
             body: '',

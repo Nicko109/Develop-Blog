@@ -22,11 +22,12 @@ class PostController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Post::class);
         $posts = PostService::index();
-
+        $isAdmin = auth()->user()->is_admin;
         $posts = PostResource::collection($posts)->resolve();
 
-        return inertia('Post/Index', compact('posts'));
+        return inertia('Post/Index', compact('posts', 'isAdmin'));
 
     }
 
@@ -35,6 +36,7 @@ class PostController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Post::class);
         return inertia('Post/Create');
     }
 
@@ -43,6 +45,7 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
+        $this->authorize('create', Post::class);
         $data = $request->validated();
 
         $post = PostService::store($data);
@@ -55,11 +58,12 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        $this->authorize('view', $post);
         $post = PostService::show($post);
-
+        $isAdmin = auth()->user()->is_admin;
         $post = PostResource::make($post)->resolve();
 
-        return inertia('Post/Show', compact('post'));
+        return inertia('Post/Show', compact('post', 'isAdmin'));
     }
 
     /**
@@ -67,7 +71,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-
+        $this->authorize('update', $post);
         $post = PostResource::make($post)->resolve();
 
         return inertia('Post/Edit', compact('post'));
@@ -78,7 +82,7 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-
+        $this->authorize('update', $post);
         $data = $request->validated();
 
 
@@ -94,7 +98,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-
+        $this->authorize('delete', $post);
         PostService::destroy($post);
 
         return redirect()->route('posts.index');

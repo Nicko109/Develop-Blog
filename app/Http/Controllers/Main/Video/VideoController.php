@@ -7,6 +7,7 @@ use App\Http\Requests\Post\CommentRequest;
 use App\Http\Resources\Comment\CommentResource;
 use App\Http\Resources\Post\PostResource;
 use App\Http\Resources\Video\VideoResource;
+use App\Models\Post;
 use App\Models\Video;
 use App\Http\Requests\Video\StoreVideoRequest;
 use App\Http\Requests\Video\UpdateVideoRequest;
@@ -22,11 +23,12 @@ class VideoController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Video::class);
         $videos = VideoService::index();
-
+        $isAdmin = auth()->user()->is_admin;
         $videos = VideoResource::collection($videos)->resolve();
 
-        return inertia('Video/Index', compact('videos'));
+        return inertia('Video/Index', compact('videos', 'isAdmin'));
     }
 
     /**
@@ -34,6 +36,7 @@ class VideoController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Video::class);
         return inertia('Video/Create');
     }
 
@@ -42,6 +45,7 @@ class VideoController extends Controller
      */
     public function store(StoreVideoRequest $request)
     {
+        $this->authorize('create', Video::class);
         $data = $request->validated();
 
         $video = VideoService::store($data);
@@ -54,11 +58,12 @@ class VideoController extends Controller
      */
     public function show(Video $video)
     {
+        $this->authorize('view', $video);
         $video = VideoService::show($video);
-
+        $isAdmin = auth()->user()->is_admin;
         $video = VideoResource::make($video)->resolve();
 
-        return inertia('Video/Show', compact('video'));
+        return inertia('Video/Show', compact('video', 'isAdmin'));
     }
 
     /**
@@ -66,6 +71,7 @@ class VideoController extends Controller
      */
     public function edit(Video $video)
     {
+        $this->authorize('update', $video);
         $video = VideoResource::make($video)->resolve();
         return inertia('Video/Edit', compact('video'));
     }
@@ -75,6 +81,7 @@ class VideoController extends Controller
      */
     public function update(UpdateVideoRequest $request, Video $video)
     {
+        $this->authorize('update', $video);
         $data = $request->validated();
 
         $data = VideoService::updateFile($video, $data);
@@ -90,6 +97,7 @@ class VideoController extends Controller
      */
     public function destroy(Video $video)
     {
+        $this->authorize('delete', $video);
         VideoService::destroy($video);
 
         return redirect()->route('videos.index');

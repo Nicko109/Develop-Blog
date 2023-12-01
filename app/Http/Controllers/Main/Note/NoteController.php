@@ -20,11 +20,14 @@ class NoteController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Note::class);
         $notes = NoteService::index();
 
         $notes = NoteResource::collection($notes)->resolve();
 
-        return inertia('Note/Index', compact('notes'));
+        $isAdmin = auth()->user()->is_admin;
+
+        return inertia('Note/Index', compact('notes', 'isAdmin'));
     }
 
     /**
@@ -32,6 +35,7 @@ class NoteController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Note::class);
         return inertia('Note/Create');
     }
 
@@ -40,6 +44,7 @@ class NoteController extends Controller
      */
     public function store(StoreNoteRequest $request)
     {
+        $this->authorize('create', Note::class);
         $data = $request->validated();
 
         $note = NoteService::store($data);
@@ -52,11 +57,15 @@ class NoteController extends Controller
      */
     public function show(Note $note)
     {
+        $this->authorize('view', $note);
         $note = NoteService::show($note);
 
         $note = NoteResource::make($note)->resolve();
 
-        return inertia('Note/Show', compact('note'));
+        $isAdmin = auth()->user()->is_admin;
+
+
+        return inertia('Note/Show', compact('note', 'isAdmin'));
     }
 
     /**
@@ -64,6 +73,7 @@ class NoteController extends Controller
      */
     public function edit(Note $note)
     {
+        $this->authorize('update', $note);
         $note = NoteResource::make($note)->resolve();
         return inertia('Note/Edit', compact('note'));
     }
@@ -73,6 +83,7 @@ class NoteController extends Controller
      */
     public function update(UpdateNoteRequest $request, Note $note)
     {
+        $this->authorize('update', $note);
         $data = $request->validated();
         NoteService::update($note, $data);
 
@@ -85,6 +96,7 @@ class NoteController extends Controller
      */
     public function destroy(Note $note)
     {
+        $this->authorize('delete', $note);
         NoteService::destroy($note);
 
         return redirect()->route('notes.index');
